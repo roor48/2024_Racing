@@ -26,8 +26,11 @@ namespace MinGun
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-                carControl.SetBoost(5f);
+            // if (Input.GetKeyDown(KeyCode.Q))
+            //     carControl.SetBoost(5f);
+            //
+            // if (Input.GetKeyDown(KeyCode.E))
+            //     carControl.SetBoost(3f);
         }
 
 
@@ -38,10 +41,10 @@ namespace MinGun
                 switch (other.GetComponent<Item>().itemType)
                 {
                     case Item.ItemType.LowBoost:
-                        carControl.SetBoost(10f);
+                        carControl.SetBoost(5f);
                         break;
                     case Item.ItemType.HighBoost:
-                        carControl.SetBoost(5f);
+                        carControl.SetBoost(2f);
                         break;
                 }
             }

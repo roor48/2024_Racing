@@ -16,7 +16,8 @@ namespace MinGun
     public class CarControl : MonoBehaviour
     {
         private CarManager carManager;
-        private InputManager inputManager;
+        private GameManager gameManager;
+        [HideInInspector] public InputManager inputManager;
         private Rigidbody rigidbody;
         
         private List<WheelCollider> wheelColliders;
@@ -28,29 +29,34 @@ namespace MinGun
         public float KPH;
         public float smoothTime = 0.01f;
         public float downForceValue = 50f;
-        public float motorTorque;
+        public float gear;
         public float turnWheelRot;
         public float brakePower;
         public float boostPower;
-        public List<float> gears;
-        public int gearNum;
         public AnimationCurve animationCurve;
         
-        [HideInInspector] public float totalPower;
-        [HideInInspector] public float wheelsRPM;
-        [HideInInspector] public float engineRPM;
+        public float totalPower;
+        public float wheelsRPM;
+        public float engineRPM;
 
         [Header("DEBUG")]
         public float[] slip = new float[4];
 
         private void Start()
         {
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             carManager = this.GetComponent<CarManager>();
             inputManager = this.GetComponent<InputManager>();
             rigidbody = this.GetComponent<Rigidbody>();
             wheelColliders = carManager.wheelColliders;
 
+            if (PlayerPrefs.GetInt("Engine1") == 2)
+                gear = 3f;
+            if (PlayerPrefs.GetInt("Engine2") == 2)
+                gear = 4f;
+
             carManager.rigidbody.centerOfMass = centerOfMess;
+
         }
 
         private void FixedUpdate()
@@ -66,9 +72,9 @@ namespace MinGun
         {
             WheelRPM();
 
-            totalPower = animationCurve.Evaluate(engineRPM) * (gears[gearNum] * inputManager.vertical);
+            totalPower = animationCurve.Evaluate(engineRPM) * 2 * inputManager.vertical;
             float velocity = 0f;
-            engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * gears[gearNum]), ref velocity, smoothTime);
+            engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * 2), ref velocity, smoothTime);
             
             RunCar(); 
         }
@@ -114,7 +120,10 @@ namespace MinGun
 
             KPH = rigidbody.velocity.magnitude * 3.6f;
 
-            wheelColliders[2].brakeTorque = wheelColliders[3].brakeTorque = inputManager.handbreak ? brakePower : 0;
+            foreach (var t in wheelColliders)
+            {
+                t.brakeTorque = inputManager.handbreak ? brakePower : 0;
+            }
         }
 
         private void WheelRotate()
@@ -129,6 +138,18 @@ namespace MinGun
             rigidbody.AddForce(-transform.up * (downForceValue * rigidbody.velocity.magnitude));
         }
 
+        public void SetBoost(float _boostPower)
+        {
+            boostPower = _boostPower;
+            rigidbody.AddForce(transform.forward * boostPower, ForceMode.VelocityChange);
+            CancelInvoke(nameof(StopBoost));
+            Invoke(nameof(StopBoost), 2f);
+        }
+        private void StopBoost()
+        {
+            boostPower = 0;
+        }
+
         private void GetFriction()
         {
             for (int i = 0; i < wheelColliders.Count; i++)
@@ -139,19 +160,6 @@ namespace MinGun
                 slip[i] = wheelHit.forwardSlip;
             }
         }
-
-        public void SetBoost(float _boostPower)
-        {
-            boostPower = _boostPower;
-            rigidbody.AddForce(transform.forward * boostPower, ForceMode.VelocityChange);
-            Invoke(nameof(StopBoost), 3f);
-        }
-
-        private void StopBoost()
-        {
-            boostPower = 0;
-        }
-
         private void OnDrawGizmosSelected()
         {
             Gizmos.DrawWireSphere(transform.position + centerOfMess, 0.1f);
