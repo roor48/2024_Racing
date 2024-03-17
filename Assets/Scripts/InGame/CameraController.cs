@@ -21,6 +21,8 @@ namespace MinGun
         {
             mainCam = this.GetComponent<Camera>();
             player = GameObject.FindGameObjectWithTag("Player").transform;
+            cameraPos = player.transform.Find("CameraPos");
+            lookPos = player.transform.Find("LookPos");
             carControl = player.GetComponent<CarControl>();
 
             desiredFOV = (120f - defaultFOV) / 5f;

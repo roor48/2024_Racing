@@ -12,13 +12,21 @@ namespace MinGun
         rear,
         all
     }
+
+    public enum WheelType
+    {
+        None,
+        Desert,
+        Forest,
+        City
+    }
     [RequireComponent(typeof(CarManager)), RequireComponent(typeof(WheelAnim)), RequireComponent(typeof(InputManager))]
     public class CarControl : MonoBehaviour
     {
         private CarManager carManager;
         private GameManager gameManager;
-        [HideInInspector] public InputManager inputManager;
         private Rigidbody rigidbody;
+        [HideInInspector] public InputManager inputManager;
         
         private List<WheelCollider> wheelColliders;
         
@@ -26,12 +34,10 @@ namespace MinGun
         public Vector3 centerOfMess;
 
         [Header("Variables")]
+        public float handBrakeFrictionMultiplier = 2f;
         public float KPH;
-        public float smoothTime = 0.01f;
-        public float downForceValue = 50f;
         public float gear;
         public float turnWheelRot;
-        public float brakePower;
         public float boostPower;
         public AnimationCurve animationCurve;
         
@@ -39,6 +45,11 @@ namespace MinGun
         public float wheelsRPM;
         public float engineRPM;
 
+        public WheelType wheelType;
+
+        private WheelFrictionCurve forwardFriction, sidewaysFriction;
+        private float thrust = -2000, radius = 6, brakePower = 50000, downForceValue = 100f, smoothTime = 0.09f, throttle;
+        
         [Header("DEBUG")]
         public float[] slip = new float[4];
 
@@ -50,13 +61,26 @@ namespace MinGun
             rigidbody = this.GetComponent<Rigidbody>();
             wheelColliders = carManager.wheelColliders;
 
-            if (PlayerPrefs.GetInt("Engine1") == 2)
-                gear = 3f;
-            if (PlayerPrefs.GetInt("Engine2") == 2)
-                gear = 4f;
+            if (inputManager.driverType != InputManager.Driver.AI)
+            {
+                if (PlayerPrefs.GetInt("6Engine") == 2)
+                    gear = 3f;
+                else if (PlayerPrefs.GetInt("8Engine") == 2)
+                    gear = 4f;
+                else
+                    gear = 2f;
+
+                if (PlayerPrefs.GetInt("DesertWheel") == 2)
+                    wheelType = WheelType.Desert;
+                else if (PlayerPrefs.GetInt("ForestWheel") == 2)
+                    wheelType = WheelType.Forest;
+                else if (PlayerPrefs.GetInt("CityWheel") == 2)
+                    wheelType = WheelType.City;
+                else
+                    wheelType = WheelType.None;
+            }
 
             carManager.rigidbody.centerOfMass = centerOfMess;
-
         }
 
         private void FixedUpdate()
@@ -64,6 +88,7 @@ namespace MinGun
             WheelRotate();
             AddDownForce();
             CalculateEnginePower();
+            AdjustTraction();
             
             GetFriction();
         }
@@ -72,11 +97,11 @@ namespace MinGun
         {
             WheelRPM();
 
-            totalPower = animationCurve.Evaluate(engineRPM) * 2 * inputManager.vertical;
+            totalPower = animationCurve.Evaluate(engineRPM) * gear * inputManager.vertical;
             float velocity = 0f;
-            engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * 2), ref velocity, smoothTime);
+            engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(wheelsRPM) * 3.6f * gear), ref velocity, smoothTime);
             
-            RunCar(); 
+            RunCar();
         }
 
         private void WheelRPM()
@@ -95,35 +120,29 @@ namespace MinGun
         {
             int fr = 0, ba = 0;
 
-            switch (carType)
+            if(carType == CarType.all)
             {
-                case CarType.front:
-                    fr = 0;
-                    ba = 2;
-                    break;
-                
-                case CarType.rear:
-                    fr = 2;
-                    ba = 4;
-                    break;
-                
-                case CarType.all:
-                    fr = 0;
-                    ba = 4;
-                    break;
+                foreach (var t in wheelColliders)
+                {
+                    t.motorTorque = totalPower / 4;
+                }
+            }
+            else if(carType == CarType.rear)
+            {
+                for (int i = 2; i < wheelColliders.Count; i++)
+                {
+                    wheelColliders[i].motorTorque = totalPower / 2;
+                }
+            }
+            else if (carType == CarType.front)
+            {
+                for (int i = 0 ; i < wheelColliders.Count - 2; i++)
+                {
+                    wheelColliders[i].motorTorque =  totalPower / 2;
+                }  
             }
             
-            for (int i = fr; i < ba; i++)
-            {
-                wheelColliders[i].motorTorque = totalPower / (ba-fr);
-            }
-
             KPH = rigidbody.velocity.magnitude * 3.6f;
-
-            foreach (var t in wheelColliders)
-            {
-                t.brakeTorque = inputManager.handbreak ? brakePower : 0;
-            }
         }
 
         private void WheelRotate()
@@ -138,6 +157,76 @@ namespace MinGun
             rigidbody.AddForce(-transform.up * (downForceValue * rigidbody.velocity.magnitude));
         }
 
+        private float driftFactor;
+        private void AdjustTraction()
+        {
+            float driftSmoothFactor = .7f * Time.deltaTime;
+            if (inputManager.handbreak)
+            {
+                sidewaysFriction = wheelColliders[0].sidewaysFriction;
+                forwardFriction = wheelColliders[0].forwardFriction;
+
+                float velocity = 0f;
+                sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue
+                        = Mathf.SmoothDamp(forwardFriction.asymptoteValue, driftFactor * handBrakeFrictionMultiplier,
+                                            ref velocity, 0.7f * driftSmoothFactor);
+
+                for (int i = 2; i < 4; i++)
+                {
+                    wheelColliders[i].sidewaysFriction = sidewaysFriction;
+                    wheelColliders[i].forwardFriction = forwardFriction;
+                }
+
+                forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue
+                    = 1.1f;
+
+                for (int i = 0; i < 2; i++)
+                {
+                    wheelColliders[i].sidewaysFriction = sidewaysFriction;
+                    wheelColliders[i].forwardFriction = forwardFriction;
+                }
+                rigidbody.AddForce(transform.forward * (KPH * 25));
+            }
+            else
+            {
+                forwardFriction = wheelColliders[0].forwardFriction;
+                sidewaysFriction = wheelColliders[0].sidewaysFriction;
+
+                sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue =
+                    KPH * handBrakeFrictionMultiplier / 300f + 1;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    wheelColliders[i].forwardFriction = forwardFriction;
+                    wheelColliders[i].sidewaysFriction = sidewaysFriction;
+                }
+            }
+
+            for (int i = 2; i < 4; i++)
+            {
+                WheelHit wheelHit;
+                wheelColliders[i].GetGroundHit(out wheelHit);
+
+                if (wheelHit.sidewaysSlip >= 0.3f || wheelHit.sidewaysSlip <= -0.3f ||
+                    wheelHit.forwardSlip >= 0.3f || wheelHit.forwardSlip <= -0.3f)
+                {
+                    playPauseSmoke = true;
+                }
+                else
+                {
+                    playPauseSmoke = false;
+                }
+
+                if (wheelHit.sidewaysSlip < 0)
+                    driftFactor = (1 + -inputManager.horizontal) * Mathf.Abs(wheelHit.sidewaysSlip);
+                else if (wheelHit.sidewaysSlip > 0)
+                    driftFactor = (1 + inputManager.horizontal) * Mathf.Abs(wheelHit.sidewaysSlip);
+
+            }
+        }
+
+        public bool playPauseSmoke = false;
+
         public void SetBoost(float _boostPower)
         {
             boostPower = _boostPower;
@@ -149,7 +238,6 @@ namespace MinGun
         {
             boostPower = 0;
         }
-
         private void GetFriction()
         {
             for (int i = 0; i < wheelColliders.Count; i++)

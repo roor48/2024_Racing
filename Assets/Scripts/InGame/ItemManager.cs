@@ -26,11 +26,11 @@ namespace MinGun
 
         private void Update()
         {
-            // if (Input.GetKeyDown(KeyCode.Q))
-            //     carControl.SetBoost(5f);
-            //
-            // if (Input.GetKeyDown(KeyCode.E))
-            //     carControl.SetBoost(3f);
+            if (Input.GetKeyDown(KeyCode.Q))
+                carControl.SetBoost(5f);
+            
+            if (Input.GetKeyDown(KeyCode.E))
+                carControl.SetBoost(3f);
         }
 
 
