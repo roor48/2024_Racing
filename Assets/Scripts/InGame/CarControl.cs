@@ -85,6 +85,8 @@ namespace MinGun
 
         private void FixedUpdate()
         {
+            if (!gameManager.canStart)
+                return;
             WheelRotate();
             AddDownForce();
             CalculateEnginePower();

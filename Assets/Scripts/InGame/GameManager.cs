@@ -16,9 +16,17 @@ namespace MinGun
         private float desiredPosition;
 
         public float vehicleSpeed;
+
+        public bool canStart;
+        public Animator countDownAnim;
+        private Text countDownText;
         private void Start()
         {
             carControl = GameObject.Find("Player").GetComponent<CarControl>();
+            countDownText = countDownAnim.GetComponent<Text>();
+            
+            canStart = false;
+            StartCoroutine(CountDown());
         }
 
         private void Update()
@@ -34,6 +42,25 @@ namespace MinGun
             desiredPosition = startPosition - endPosition;
             float temp = vehicleSpeed / 180;
             needle.transform.eulerAngles = new Vector3(0, 0, (startPosition - temp * desiredPosition));
+        }
+
+        private IEnumerator CountDown()
+        {
+            countDownText.text = "3";
+            countDownAnim.SetTrigger("doCountDown");
+            yield return new WaitForSeconds(1f);
+            
+            countDownText.text = "2";
+            countDownAnim.SetTrigger("doCountDown");
+            yield return new WaitForSeconds(1f);
+            
+            countDownText.text = "1";
+            countDownAnim.SetTrigger("doCountDown");
+            yield return new WaitForSeconds(1f);
+            
+            countDownText.text = "Go!";
+            countDownAnim.SetTrigger("doCountDown");
+            canStart = true;
         }
     }
 }

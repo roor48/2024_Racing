@@ -17,15 +17,13 @@ namespace MinGun
         public float vertical;
         public bool handbreak;
 
-        public TrackWayPoint wayPoinsts;
         public Transform currentWaypoint;
         public List<Transform> nodes;
         [Range(0, 10)] public int wayPointOffset;
         [Range(0, 5)] public float steerForce;
         private void Awake()
         {
-            wayPoinsts = GameObject.FindWithTag("Path").GetComponent<TrackWayPoint>();
-            nodes = wayPoinsts.nodes;
+            nodes = GameObject.FindWithTag("Path").GetComponent<TrackWayPoint>().nodes;
             currentWaypoint = nodes[0];
         }
 
@@ -53,8 +51,6 @@ namespace MinGun
 
         private void OnAI()
         {
-            vertical = 1f;
-            
             Vector3 relative = transform.InverseTransformPoint(currentWaypoint.transform.position);
             relative /= relative.magnitude;
 

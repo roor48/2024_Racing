@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,13 @@ namespace MinGun
     public class CloseBuyWindow : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public GameObject buyWindow;
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                OnPointerUp(null);
+        }
+
         public void OnPointerDown(PointerEventData eventData)
         {
             

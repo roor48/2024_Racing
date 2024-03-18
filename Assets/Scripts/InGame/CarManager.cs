@@ -7,18 +7,23 @@ namespace MinGun
 {
     public class CarManager : MonoBehaviour
     {
-        public CarControl carControl;
-        public Rigidbody rigidbody;
+        [HideInInspector] public CarControl carControl;
+        [HideInInspector] public Rigidbody rigidbody;
+        private InputManager inputManager;
 
         private Transform wheelCollidersContainer;
         public List<WheelCollider> wheelColliders;
         private Transform wheelMeshesContainer;
         public List<Transform> wheelMeshes;
 
+        private List<Transform> nodes;
+
         private void Awake()
         {
             carControl = this.GetComponent<CarControl>();
             rigidbody = this.GetComponent<Rigidbody>();
+            inputManager = this.GetComponent<InputManager>();
+            nodes = GameObject.FindWithTag("Path").GetComponent<TrackWayPoint>().nodes;
             
             wheelCollidersContainer = transform.Find("WheelCols");
             wheelMeshesContainer = transform.Find("WheelMeshes");
@@ -32,6 +37,11 @@ namespace MinGun
             {
                 wheelMeshes.Add(wheelMeshesContainer.GetChild(i));
             }
+        }
+
+        private void Update()
+        {
+            
         }
     }
 }

@@ -10,30 +10,33 @@ namespace MinGun
     public class ChooseManager : MonoBehaviour
     {
         public int currency;
+        public Text currencyText;
+
+        private ShowNextCar showNextCar;
 
         public List<Transform> buyButtons;
-
-        public Text currencyText;
         public ShopInfo curShopInfo;
         public GameObject buyWindow;
+
+        public Text nextMapText;
+        private string nextScene;
 
         private void Awake()
         {
             PlayerPrefs.DeleteAll();
             currency = PlayerPrefs.GetInt("Currency");
             currency = 123456789;
+
+            nextScene = PlayerPrefs.GetString("NextScene");
+            if (string.IsNullOrEmpty(nextScene))
+                nextScene = "Desert";
             
             UpdateUIs();
         }
 
         public void PlayBtn()
         {
-            string nextScene = PlayerPrefs.GetString("NextScene");
-
-            if (string.IsNullOrEmpty(nextScene))
-                SceneManager.LoadScene("DesertMap");
-            else
-                SceneManager.LoadScene(nextScene);
+            SceneManager.LoadScene(nextScene + "Map");
         }
 
         public void CloseUpgradeWindow(GameObject upgradeWindow)
@@ -105,6 +108,8 @@ namespace MinGun
                     buyButton.GetChild(i).gameObject.SetActive(i==val);
                 }
             }
+
+            nextMapText.text = nextScene;
         }
     }
 }
