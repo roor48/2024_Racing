@@ -19,6 +19,7 @@ namespace MinGun
             nodes = new List<Transform>();
             for (int i = 1; i < path.Length; i++)
             {
+                path[i].name = $"{i}";
                 nodes.Add(path[i]);
             }
 

@@ -7,16 +7,28 @@ namespace MinGun
 {
     public class CheckLap : MonoBehaviour
     {
-        public int maxLap;
+        [Min(1)] public int maxLap;
 
         private void OnTriggerEnter(Collider other)
         {
-            CarManager carManager;
-            TryGetComponent<CarManager>(out carManager);
-            if (carManager == null)
+            other.TryGetComponent(out InputManager inputManager);
+            if (inputManager == null)
                 return;
-            
-            
+
+            if (inputManager.visitedNodes.Count == inputManager.nodes.Count)
+            {
+                inputManager.currentLap++;
+                inputManager.visitedNodes.Clear();
+                
+                for (int i = 0; i <= inputManager.wayPointOffset; i++)
+                    inputManager.visitedNodes.Add(inputManager.nodes[i]);
+
+            }
+
+            if (inputManager.currentLap == maxLap)
+            {
+                
+            }
         }
     }
 }

@@ -6,15 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="33c36935-a17c-4a0e-9e4e-c93a88a67a1e" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2024_Racing/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2024_Racing/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ChooseCar.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ChooseCar.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/DesertMap.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/DesertMap.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Choose/ChooseManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Choose/ChooseManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Choose/CloseBuyWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Choose/CloseBuyWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Choose/ShopInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Choose/ShopInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Choose/ShowNextCar.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Choose/ShowNextCar.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InGame/CarControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InGame/CarControl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InGame/CarManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InGame/CarManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InGame/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InGame/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InGame/AI/TrackWayPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InGame/AI/TrackWayPoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InGame/CheckLap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InGame/CheckLap.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/InGame/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InGame/InputManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +112,7 @@
       <workItem from="1710663708271" duration="5642000" />
       <workItem from="1710672837283" duration="5839000" />
       <workItem from="1710679148807" duration="1845000" />
-      <workItem from="1710730002035" duration="522000" />
+      <workItem from="1710730002035" duration="4743000" />
     </task>
     <servers />
   </component>
