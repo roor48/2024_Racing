@@ -6,48 +6,40 @@ using UnityEngine;
 
 namespace MinGun
 {
-    public class Item
-    {
-        public enum ItemType
-        {
-            LowBoost,
-            HighBoost
-        }
-        public ItemType itemType;
-    }
     public class ItemManager : MonoBehaviour
     {
         private CarControl carControl;
+        private GameManager gameManager;
 
+        public GameObject upgradeWindow;
         private void Start()
         {
             carControl = GameObject.Find("Player").GetComponent<CarControl>();
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Q))
-                carControl.SetBoost(5f);
+                GetBoost(8f);
             
             if (Input.GetKeyDown(KeyCode.E))
-                carControl.SetBoost(3f);
+                GetBoost(4f);
         }
 
-
-        private void OnTriggerEnter2D(Collider2D other)
+        public void GetMoney(int _money)
         {
-            if (other.CompareTag("Item"))
-            {
-                switch (other.GetComponent<Item>().itemType)
-                {
-                    case Item.ItemType.LowBoost:
-                        carControl.SetBoost(5f);
-                        break;
-                    case Item.ItemType.HighBoost:
-                        carControl.SetBoost(2f);
-                        break;
-                }
-            }
+            gameManager.GetMoney(_money);
+        }
+
+        public void GetBoost(float _speed)
+        {
+            carControl.SetBoost(_speed);
+        }
+
+        public void ShowUpgradeWindow()
+        {
+            upgradeWindow.SetActive(true);
         }
     }
 }

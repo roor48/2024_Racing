@@ -815,8 +815,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: UnEquipBtn
         m_Mode: 2
         m_Arguments:
@@ -965,8 +965,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: EquipBtn
         m_Mode: 2
         m_Arguments:
@@ -1115,8 +1115,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: UnEquipBtn
         m_Mode: 2
         m_Arguments:
@@ -1486,6 +1486,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802862770}
   m_CullTransparentMesh: 1
+--- !u!1 &828313811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 828313812}
+  - component: {fileID: 828313813}
+  m_Layer: 0
+  m_Name: CheatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &828313812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828313811}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &828313813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828313811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3267b9c54039644b802094f532ec580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &855413309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,8 +1746,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: UnEquipBtn
         m_Mode: 2
         m_Arguments:
@@ -2266,8 +2310,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: EquipBtn
         m_Mode: 2
         m_Arguments:
@@ -2416,8 +2460,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: UnEquipBtn
         m_Mode: 2
         m_Arguments:
@@ -2656,8 +2700,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: BuyWindowBtn
         m_Mode: 2
         m_Arguments:
@@ -2732,6 +2776,7 @@ GameObject:
   - component: {fileID: 1225874628}
   - component: {fileID: 1225874629}
   - component: {fileID: 1225874630}
+  - component: {fileID: 1225874631}
   m_Layer: 0
   m_Name: ChooseManager
   m_TagString: Untagged
@@ -2766,16 +2811,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72101626315e9d549aadc072b46a748e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currency: 0
-  currencyText: {fileID: 51118576}
-  buyButtons:
-  - {fileID: 665977256}
-  - {fileID: 1748848517}
-  - {fileID: 917208512}
-  - {fileID: 1577428812}
-  - {fileID: 2002388399}
-  curShopInfo: {fileID: 0}
-  buyWindow: {fileID: 674201844}
   nextMapText: {fileID: 1556668834}
 --- !u!114 &1225874630
 MonoBehaviour:
@@ -2790,6 +2825,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carList: []
+--- !u!114 &1225874631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225874627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130978e43adddec4e90a914a4675c7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currency: 0
+  currencyText: {fileID: 51118576}
+  buyButtons:
+  - {fileID: 665977256}
+  - {fileID: 1748848517}
+  - {fileID: 917208512}
+  - {fileID: 1577428812}
+  - {fileID: 2002388399}
+  buyWindow: {fileID: 674201844}
+  curShopInfo: {fileID: 0}
 --- !u!1 &1230648954
 GameObject:
   m_ObjectHideFlags: 0
@@ -3480,8 +3537,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: BuyWindowBtn
         m_Mode: 2
         m_Arguments:
@@ -3968,8 +4025,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: BuyWindowBtn
         m_Mode: 2
         m_Arguments:
@@ -4277,8 +4334,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: CloseUpgradeWindow
         m_Mode: 2
         m_Arguments:
@@ -4412,8 +4469,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: BuyWindowBtn
         m_Mode: 2
         m_Arguments:
@@ -4721,8 +4778,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: BuyBtn
         m_Mode: 1
         m_Arguments:
@@ -5067,8 +5124,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: BuyWindowBtn
         m_Mode: 2
         m_Arguments:
@@ -5232,8 +5289,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: EquipBtn
         m_Mode: 2
         m_Arguments:
@@ -5382,8 +5439,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: EquipBtn
         m_Mode: 2
         m_Arguments:
@@ -5749,8 +5806,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: EquipBtn
         m_Mode: 2
         m_Arguments:
@@ -6059,8 +6116,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1225874629}
-        m_TargetAssemblyTypeName: MinGun.ChooseManager, MinGun
+      - m_Target: {fileID: 1225874631}
+        m_TargetAssemblyTypeName: MinGun.ShopManager, MinGun
         m_MethodName: UnEquipBtn
         m_Mode: 2
         m_Arguments:

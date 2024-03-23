@@ -11,7 +11,7 @@ namespace MinGun
         [Range(0, 1)] public float sphereRadius;
         public List<Transform> nodes = new List<Transform>();
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             Gizmos.color = lineColor;
             Transform[] path = GetComponentsInChildren<Transform>();

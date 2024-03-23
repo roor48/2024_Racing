@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DesertMap.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/ForestMap.unity
+    guid: 041bee964c158994b81fbb39f246d6e9
+  - enabled: 1
+    path: Assets/Scenes/CityMap.unity
+    guid: 2b12a7773a3b8864f9f86752f651365c
+  - enabled: 1
+    path: Assets/Scenes/EndMap.unity
+    guid: baf1538bd92fe6445a550da17a853307
   m_configObjects: {}

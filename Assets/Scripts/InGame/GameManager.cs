@@ -2,65 +2,68 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace MinGun
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
-        private CarControl carControl;
-        public GameObject needle;
-        public Text rpmText;
+        public bool canStart = false;
 
-        private float startPosition = 220f, endPosition = -45f;
-        private float desiredPosition;
+        public bool isFinished = false;
+        public bool isGameEnd = false;
 
-        public float vehicleSpeed;
-
-        public bool canStart;
-        public Animator countDownAnim;
-        private Text countDownText;
-        private void Start()
+        public void SetTimeScale(float val)
         {
-            carControl = GameObject.Find("Player").GetComponent<CarControl>();
-            countDownText = countDownAnim.GetComponent<Text>();
+            if (isGameEnd)
+                val = 0f;
+            Time.timeScale = val;
+        }
+        public void GetMoney(int _money)
+        {
+            Debug.Log($"GetMoney: {_money}");
+            PlayerPrefs.SetInt("Currency", _money + PlayerPrefs.GetInt("Currency"));
+        }
+        
+        public void GoNextScene()
+        {
+            string curScene = PlayerPrefs.GetString("NextScene");
+            string nextScene = "";
             
+            switch (curScene)
+            {
+                case "Desert":
+                    nextScene = "Forest";
+                    break;
+                
+                case "Forest":
+                    nextScene = "City";
+                    break;
+                
+                case "City":
+                    nextScene = "End";
+                    break;
+                
+                default:
+                    nextScene = "Desert";
+                    break;
+            }
+
+            PlayerPrefs.SetString("NextScene", nextScene);
+
             canStart = false;
-            StartCoroutine(CountDown());
-        }
+            isFinished = false;
+            isGameEnd = false;
+            SetTimeScale(1f);
 
-        private void Update()
-        {
-            rpmText.text = $"{carControl.KPH:0}KPH";
-
-            vehicleSpeed = carControl.KPH;
-            UpdateNeedle();
-        }
-
-        private void UpdateNeedle()
-        {
-            desiredPosition = startPosition - endPosition;
-            float temp = vehicleSpeed / 180;
-            needle.transform.eulerAngles = new Vector3(0, 0, (startPosition - temp * desiredPosition));
-        }
-
-        private IEnumerator CountDown()
-        {
-            countDownText.text = "3";
-            countDownAnim.SetTrigger("doCountDown");
-            yield return new WaitForSeconds(1f);
-            
-            countDownText.text = "2";
-            countDownAnim.SetTrigger("doCountDown");
-            yield return new WaitForSeconds(1f);
-            
-            countDownText.text = "1";
-            countDownAnim.SetTrigger("doCountDown");
-            yield return new WaitForSeconds(1f);
-            
-            countDownText.text = "Go!";
-            countDownAnim.SetTrigger("doCountDown");
-            canStart = true;
+            if (nextScene == "End")
+            {
+                SceneManager.LoadScene("EndMap");
+            }
+            else
+            {
+                SceneManager.LoadScene("ChooseCar");
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace MinGun
@@ -48,7 +47,7 @@ namespace MinGun
         public WheelType wheelType;
 
         private WheelFrictionCurve forwardFriction, sidewaysFriction;
-        private float thrust = -2000, radius = 6, brakePower = 50000, downForceValue = 100f, smoothTime = 0.09f, throttle;
+        private float thrust = -2000, radius = 6, brakePower = 50000, downForceValue = 300f, smoothTime = 0.09f, throttle;
         
         [Header("DEBUG")]
         public float[] slip = new float[4];
@@ -61,7 +60,27 @@ namespace MinGun
             rigidbody = this.GetComponent<Rigidbody>();
             wheelColliders = carManager.wheelColliders;
 
-            if (inputManager.driverType != InputManager.Driver.AI)
+            UpdateGears();
+
+            carManager.rigidbody.centerOfMass = centerOfMess;
+        }
+
+        private void FixedUpdate()
+        {
+            if (!gameManager.canStart)
+                return;
+            WheelRotate();
+            AddDownForce();
+            CalculateEnginePower();
+            DoBrake();
+            AdjustTraction();
+            
+            GetFriction();
+        }
+
+        public void UpdateGears()
+        {
+            if (inputManager.driverType != Driver.Enemy)
             {
                 if (PlayerPrefs.GetInt("6Engine") == 2)
                     gear = 3f;
@@ -79,20 +98,6 @@ namespace MinGun
                 else
                     wheelType = WheelType.None;
             }
-
-            carManager.rigidbody.centerOfMass = centerOfMess;
-        }
-
-        private void FixedUpdate()
-        {
-            if (!gameManager.canStart)
-                return;
-            WheelRotate();
-            AddDownForce();
-            CalculateEnginePower();
-            AdjustTraction();
-            
-            GetFriction();
         }
 
         private void CalculateEnginePower()
@@ -109,41 +114,38 @@ namespace MinGun
         private void WheelRPM()
         {
             float sum = 0;
-            int R;
-            for (R = 0; R < 4; R++)
+            int r;
+            for (r = 0; r < 4; r++)
             {
-                sum += wheelColliders[R].rpm;
+                sum += wheelColliders[r].rpm;
             }
 
-            wheelsRPM = sum / R;
+            wheelsRPM = sum / r;
         }
-
         private void RunCar()
         {
             int fr = 0, ba = 0;
 
             if(carType == CarType.all)
             {
-                foreach (var t in wheelColliders)
-                {
-                    t.motorTorque = totalPower / 4;
-                }
+                fr = 0;
+                ba = 4;
             }
             else if(carType == CarType.rear)
             {
-                for (int i = 2; i < wheelColliders.Count; i++)
-                {
-                    wheelColliders[i].motorTorque = totalPower / 2;
-                }
+                fr = 2;
+                ba = 4;
             }
             else if (carType == CarType.front)
             {
-                for (int i = 0 ; i < wheelColliders.Count - 2; i++)
-                {
-                    wheelColliders[i].motorTorque =  totalPower / 2;
-                }  
+                fr = 0;
+                ba = 2;
             }
-            
+
+            for (int i = fr ; i < ba - 2; i++)
+            {
+                wheelColliders[i].motorTorque =  totalPower / 2;
+            }  
             KPH = rigidbody.velocity.magnitude * 3.6f;
         }
 
@@ -154,6 +156,17 @@ namespace MinGun
             wheelColliders[hori < 0 ? 1 : 0].steerAngle = hori * Mathf.Rad2Deg * Mathf.Atan(2.55f / (turnWheelRot + 0.75f));
         }
 
+        private void DoBrake()
+        {
+            if (inputManager.driverType == Driver.Enemy)
+                return;
+                
+            for (int i = 0; i < 4; i++)
+            {
+                wheelColliders[i].brakeTorque = Input.GetKey(KeyCode.X) ? brakePower : 0;
+            }
+        }
+        
         private void AddDownForce()
         {
             rigidbody.AddForce(-transform.up * (downForceValue * rigidbody.velocity.magnitude));
@@ -250,6 +263,7 @@ namespace MinGun
                 slip[i] = wheelHit.forwardSlip;
             }
         }
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.DrawWireSphere(transform.position + centerOfMess, 0.1f);
